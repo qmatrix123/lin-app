@@ -1,5 +1,15 @@
 {
   "singleQuote": true,
   "semi": false,
-  "tabWidth": 4
+  "tabWidth": 4,
+  "overrides": [
+    {
+      "files": "*.prisma",
+      "options": {
+        "parser": "prisma",
+        "singleQuote": false,
+        "semi": false
+      }
+    }
+  ]
 }
