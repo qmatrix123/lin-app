@@ -16,7 +16,8 @@ function ArticlePage() {
 
     const [query, setQuery] = useState({
         page: 1,
-        per: 10
+        per: 10,
+        title: ''
     })
 
     const [currentId, setCurrentId] = useState('') // 使用当前ID变量区分是新增，还是修改
@@ -25,7 +26,7 @@ function ArticlePage() {
 
     // 监听查询条件的改变
     useEffect(() => {
-        fetch(`/api/admin/articles?page=${query.page}&per=${query.per}`)
+        fetch(`/api/admin/articles?page=${query.page}&per=${query.per}&title=${query.title}`)
             .then(res => res.json())
             .then(res => {
                 setList(res.data.list)
@@ -45,12 +46,14 @@ function ArticlePage() {
                 <Button icon={<PlusOutlined />} type='primary' onClick={() => setOpen(true)} />
             </>
         }>
-            <Form layout='inline'>
-                <Form.Item label='标题'>
+            <Form layout='inline' onFinish={(v) => {
+                setQuery({ page: 1, per: 10, title: v.title })
+            }}>
+                <Form.Item label='标题' name='title'>
                     <Input placeholder='请输入关键词' />
                 </Form.Item>
                 <Form.Item>
-                    <Button icon={<SearchOutlined />} type='primary' />
+                    <Button icon={<SearchOutlined />} type='primary' htmlType='submit' />
                 </Form.Item>
             </Form>
             <Table className='mt-2'
@@ -60,6 +63,7 @@ function ArticlePage() {
                     total: total,
                     onChange(page) {
                         setQuery({
+                            ...query,
                             page,
                             per: 10
                         })
@@ -91,7 +95,9 @@ function ArticlePage() {
                                             method: 'DELETE'
                                         }).then(res => res.json())
 
-                                        setQuery({})
+                                        setQuery({
+                                            ...query, per: 1, page: 10
+                                        })
                                     }}>
                                         <Button
                                             size='small'
@@ -135,7 +141,9 @@ function ArticlePage() {
                         }
 
                         setOpen(false)
-                        setQuery({}) // 改变query触发数据获取
+                        setQuery({
+                            ...query
+                        }) // 改变query触发数据获取
                     }}>
                     <Form.Item label='标题' name="title" rules={[{
                         required: true,

@@ -5,9 +5,15 @@ export const GET = async (req: NextRequest) => {
 
     const per = (req.nextUrl.searchParams.get('per') as any) * 1 || 10
     const page = (req.nextUrl.searchParams.get('page') as any) * 1 || 1
+    const title = req.nextUrl.searchParams.get('title') as string || ''
+
 
     const data = await prisma.article.findMany({
-        where: {},
+        where: {
+            title: {
+                contains: title, // 模糊查询
+            }
+        },
         orderBy: {
             createdAt: 'desc'
         },
@@ -16,7 +22,13 @@ export const GET = async (req: NextRequest) => {
     })
 
 
-    const total = await prisma.article.count({})
+    const total = await prisma.article.count({
+        where: {
+            title: {
+                contains: title, // 模糊查询
+            }
+        }
+    })
 
     return NextResponse.json({
         success: true,
