@@ -1,27 +1,27 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import 'antd/dist/reset.css'
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     UploadOutlined,
     UserOutlined,
-    DashboardOutlined
-} from '@ant-design/icons';
-import { Layout, Menu, Button, theme } from 'antd';
-import { useRouter } from 'next/navigation';
+    DashboardOutlined,
+} from '@ant-design/icons'
+import { Layout, Menu, Button, theme } from 'antd'
+import { useRouter } from 'next/navigation'
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content } = Layout
 
 function AntdAdmin({ children }: any) {
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(false)
     const {
         token: { colorBgContainer },
-    } = theme.useToken();
+    } = theme.useToken()
 
     const nav = useRouter()
     return (
-        <Layout className='ant-layout-has-sider h-screen'>
+        <Layout className="ant-layout-has-sider h-screen">
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="demo-logo-vertical" />
                 <Menu
@@ -54,7 +54,13 @@ function AntdAdmin({ children }: any) {
                 <Header style={{ padding: 0, background: colorBgContainer }}>
                     <Button
                         type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                        icon={
+                            collapsed ? (
+                                <MenuUnfoldOutlined />
+                            ) : (
+                                <MenuFoldOutlined />
+                            )
+                        }
                         onClick={() => setCollapsed(!collapsed)}
                         style={{
                             fontSize: '16px',
@@ -69,7 +75,7 @@ function AntdAdmin({ children }: any) {
                         padding: '8px',
                         minHeight: 280,
                         background: colorBgContainer,
-                        overflow: 'auto'
+                        overflow: 'auto',
                     }}
                 >
                     {children}
