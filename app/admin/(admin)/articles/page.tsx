@@ -22,10 +22,10 @@ import Image from 'next/image'
 import MyEditor from '../../_components/MyEditor'
 
 type Article = {
-    id: string
-    title: string
-    desc: string
-    image: string
+    id: string,
+    title: string,
+    desc: string,
+    image: string,
     content: string
 }
 

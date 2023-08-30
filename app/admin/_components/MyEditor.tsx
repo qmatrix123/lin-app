@@ -6,9 +6,10 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-react'
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor'
 
 function MyEditor({ html, setHtml }: {html: string, setHtml: any}) {
+    
     // editor 实例
-    const [editor, setEditor] = useState<IDomEditor | null>(null)   // TS 语法
-    // const [editor, setEditor] = useState(null)                   // JS 语法
+    // const [editor, setEditor] = useState<IDomEditor | null>(null)   // TS 语法
+    const [editor, setEditor] = useState(null)                   // JS 语法
 
     // 编辑器内容, 改为从外部传入
     // const [html, setHtml] = useState('<p>hello</p>')
@@ -28,6 +29,12 @@ function MyEditor({ html, setHtml }: {html: string, setHtml: any}) {
     const editorConfig: Partial<IEditorConfig> = {    // TS 语法
     // const editorConfig = {                         // JS 语法
         placeholder: '请输入内容...',
+        MENU_CONF: {
+            uploadImage: {
+                server: '/api/common/wang_editor/upload',
+                fileName: 'file'
+            }
+        }
     }
 
     // 及时销毁 editor ，重要！
