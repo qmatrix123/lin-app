@@ -18,12 +18,15 @@ import {
     DeleteOutlined,
 } from '@ant-design/icons'
 import MyUpload from '../../_components/MyUpload'
+import Image from 'next/image'
+import MyEditor from '../../_components/MyEditor'
 
 type Article = {
     id: string
     title: string
     desc: string
     image: string
+    content: string
 }
 
 function ArticlePage() {
@@ -44,6 +47,10 @@ function ArticlePage() {
 
     const [total, setTotal] = useState(0)
 
+    // 富文本编辑器
+    const [html, setHtml] = useState('')
+
+
     // 监听查询条件的改变
     useEffect(() => {
         fetch(
@@ -60,6 +67,7 @@ function ArticlePage() {
         if (!open) {
             setCurrentId('')
             setImageUrl('')
+            setHtml('')
         }
     }, [open])
 
@@ -149,6 +157,7 @@ function ArticlePage() {
                                             setOpen(true)
                                             setCurrentId(r.id)
                                             setImageUrl(r.image)
+                                            setHtml(r.content)
                                             myForm.setFieldsValue(r)
                                         }}
                                     ></Button>
@@ -191,6 +200,7 @@ function ArticlePage() {
                 onOk={() => {
                     myForm.submit()
                 }}
+                width={'75vw'}
             >
                 <Form
                     preserve={false} // 配合Modal结合使用destroyOnClose， 否则不会销毁
@@ -203,13 +213,13 @@ function ArticlePage() {
                             // 修改
                             await fetch('/api/admin/articles/' + currentId, {
                                 method: 'PUT',
-                                body: JSON.stringify({ ...v, image: imageUrl }),
+                                body: JSON.stringify({ ...v, image: imageUrl, content:  html}),
                             }).then((res) => res.json())
                         } else {
                             // 新增
                             await fetch('/api/admin/articles', {
                                 method: 'POST',
-                                body: JSON.stringify({ ...v, image: imageUrl }),
+                                body: JSON.stringify({ ...v, image: imageUrl, content:  html}),
                             }).then((res) => res.json())
                         }
 
@@ -239,6 +249,9 @@ function ArticlePage() {
                             imageUrl={imageUrl}
                             setImageUrl={setImageUrl}
                         />
+                    </Form.Item>
+                    <Form.Item label="详情">
+                        <MyEditor html={html} setHtml={setHtml} />
                     </Form.Item>
                 </Form>
             </Modal>
